@@ -1,5 +1,5 @@
 class Vaga {
-    contructor(empresa, cargo, requisitos) {
+    constructor(empresa, cargo, requisitos) {
         this.empresa = empresa;
         this.cargo = cargo;
         this.requisitos = requisitos;
