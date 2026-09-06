@@ -11,6 +11,7 @@ const perfil1 = new Candidato(
 
 console.log("Perfil do candidato:");
 console.log(perfil1);
+console.log();
 
 const empresaA = new Empresa("Empresa AA", "empresa-a@gmail.com");
 const empresaB = new Empresa("Empresa BB", "empresa-b@gmail.com");
@@ -44,6 +45,8 @@ for (let i = 0; i < listaVagas.length; i++) {
   );
 }
 
+console.log();
+
 function simularCompatibilidade(candidato, vaga) {
   let habilidadesCandidato = candidato.habilidades;
   let requisitosVaga = vaga.requisitos;
@@ -72,13 +75,57 @@ function simularCompatibilidade(candidato, vaga) {
   };
 }
 
-console.log("Resultado de compatibilidade:")
+function obterHabilidadesFaltantes(candidato, vaga) {
+  let habilidadesCandidato = candidato.habilidades;
+  let requisitosVaga = vaga.requisitos;
+  let faltantes = [];
+
+  for (let i = 0; i < requisitosVaga.length; i++) {
+    if (!habilidadesCandidato.includes(requisitosVaga[i])) {
+      faltantes.push(requisitosVaga[i]);
+    }
+  }
+
+  return faltantes;
+}
+
+console.log("Resultado de compatibilidade:");
+console.log();
+
+let maiorPercentual = 0;
+let melhorCargo = "";
+let melhorEmpresa = "";
 
 for (let i = 0; i < listaVagas.length; i++) {
   let resultado = simularCompatibilidade(perfil1, listaVagas[i]);
 
+  let habilidadesFaltantes = obterHabilidadesFaltantes(perfil1, listaVagas[i]);
+
+  let faltamTexto = "";
+
+  if (habilidadesFaltantes.length === 0) {
+    faltamTexto = "Nenhum";
+  } else {
+    faltamTexto = habilidadesFaltantes;
+  }
+
   console.log(
-    `Empresa: ${listaVagas[i].empresa} | Cargo: ${listaVagas[i].cargo} | Compatibilidade: ${resultado.percentual.toFixed(2)}% | Classificação: ${resultado.classificacao}`,
+    `Empresa: ${listaVagas[i].empresa}  
+    Cargo: ${listaVagas[i].cargo}  
+    Compatibilidade: ${resultado.percentual.toFixed(2)} %  
+    Classificação: ${resultado.classificacao}  
+    Requisitos faltantes: ${faltamTexto}`
   );
+
+  if (resultado.percentual > maiorPercentual) {
+    maiorPercentual = resultado.percentual;
+    melhorCargo = listaVagas[i].cargo;
+    melhorEmpresa = listaVagas[i].empresa;
+  }
 }
 
+console.log();
+console.log(
+  `Vaga com maior compatibilidade: 
+  ${melhorEmpresa} - ${melhorCargo} (${maiorPercentual.toFixed(2)} %)`
+);
