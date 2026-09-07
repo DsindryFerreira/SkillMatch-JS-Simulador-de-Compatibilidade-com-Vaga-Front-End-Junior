@@ -9,6 +9,19 @@ class Candidato extends Usuario {
     }
 }
 
-class Empresa extends Usuario {}
+class Empresa extends Usuario {
+  constructor(nome, email, cidade) {
+    super(nome, email);
+    this.cidade = cidade;
+  }
+
+  publicarVaga(listaDeVagas, vagaClasse, cargo, requisitos) {
+    const novaVaga = new vagaClasse(this.nome, cargo, requisitos, this.cidade);
+
+    listaDeVagas.push(novaVaga);
+
+    return `A ${this.nome} publicou uma nova oportunidade para ${cargo} em ${this.cidade}!`;
+  }
+}
 
 module.exports = { Candidato, Empresa }

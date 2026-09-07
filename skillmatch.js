@@ -9,24 +9,28 @@ const perfil1 = new Candidato(
   "3 meses",
 );
 
-const empresaA = new Empresa("Empresa AA", "empresa-a@gmail.com");
-const empresaB = new Empresa("Empresa BB", "empresa-b@gmail.com");
-const empresaC = new Empresa("Empresa CC", "empresa-c@gmail.com");
+const empresaA = new Empresa("Empresa AA", "empresa-a@gmail.com", "Palhoça");
+const empresaB = new Empresa("Empresa BB", "empresa-b@gmail.com", "São josé");
+const empresaC = new Empresa("Empresa CC", "empresa-c@gmail.com", "Florianópolis");
 
-const listaVagas = [
-  new Vaga(empresaA.nome, "Desenvolvedor Front-End Júnior", [
+const listaVagas = [];
+
+empresaA.publicarVaga(listaVagas, Vaga, "Desenvolvedor Front-End Júnior", [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "React",
+]),
+  empresaB.publicarVaga(listaVagas, Vaga, "Estagiário Web", [
     "HTML",
     "CSS",
-    "JavaScript",
-    "React",
+    "Git",
   ]),
-  new Vaga(empresaB.nome, "Estagiário Web", ["HTML", "CSS", "Git"]),
-  new Vaga(empresaC.nome, "Desenvolvedor Júnior", [
+  empresaC.publicarVaga(listaVagas, Vaga, "Desenvolvedor Júnior", [
     "JavaScript",
     "React",
     "Node.js",
-  ]),
-];
+  ]);
 
 function simularCompatibilidade(candidato, vaga) {
   let habilidadesCandidato = candidato.habilidades;
@@ -98,6 +102,8 @@ for (let i = 0; i < listaVagas.length; i++) {
     listaVagas[i].cargo,
     "| Requisitos:",
     listaVagas[i].requisitos,
+    "| Cidade:",
+    listaVagas[i].cidade,
   );
 }
 console.log();
@@ -164,3 +170,15 @@ for (let i = 0; i < vagasParaEstudar.length; i++) {
   console.log(`${recomendacoes.join(" | ")}`);
 }
 
+console.log();
+
+console.log("Testando publicação de novas vagas:");
+
+let novaPublicacao = empresaA.publicarVaga(
+  listaVagas,
+  Vaga,
+  "Desenvolvedor React Native",
+  ["JavaScript", "Git"],
+);
+
+console.log(novaPublicacao);
