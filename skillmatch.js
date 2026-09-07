@@ -20,12 +20,12 @@ empresaA.publicarVaga(listaVagas, Vaga, "Desenvolvedor Front-End Júnior", [
   "CSS",
   "JavaScript",
   "React",
-]),
+]);
   empresaB.publicarVaga(listaVagas, Vaga, "Estagiário Web", [
     "HTML",
     "CSS",
     "Git",
-  ]),
+  ]);
   empresaC.publicarVaga(listaVagas, Vaga, "Desenvolvedor Júnior", [
     "JavaScript",
     "React",
@@ -112,8 +112,13 @@ function carregarBancoDeDados(vagasIniciais) {
   });
 }
 
+function processarRelatorio(listaFiltrada, funcaoCallback) {
+  for (let i = 0; i < listaFiltrada.length; i++) {
+    funcaoCallback(listaFiltrada[i]);
+  }
+}
 
-console.log("➔  Perfil do candidato:");
+console.log("Perfil do candidato:");
 console.log(perfil1);
 console.log();
 
@@ -195,15 +200,15 @@ async function iniciarApp() {
     return simulacao.percentual < 100;
   });
 
-  for (let i = 0; i < vagasParaEstudar.length; i++) {
-    let recomendacoes = gerarRecomendacaoEstudo(perfil1, vagasParaEstudar[i]);
+  processarRelatorio(vagasParaEstudar, function (vagaAtual) {
+  let recomendacoes = gerarRecomendacaoEstudo(perfil1, vagaAtual);
 
-    console.log(
-      `Para a vaga ${vagasParaEstudar[i].cargo} na ${vagasParaEstudar[i].empresa}, estudar:`,
-    );
+  console.log(
+    `Para a vaga ${vagaAtual.cargo} na ${vagaAtual.empresa}, estudar:`,
+  );
+  console.log(`  ${recomendacoes.join(" | ")}`);
+});
 
-    console.log(`  - ${recomendacoes.join(" | ")}`);
-  }
   console.log();
 
   console.log("* Testando publicação de novas vagas:");
