@@ -89,6 +89,12 @@ function gerarRecomendacaoEstudo(candidato, vaga) {
   return recomendacoes;
 }
 
+function porcessarRelatorio(listaFiltrada, funcaoCallback) {
+  for (let i = 0; i < listaFiltrada.length; i++) {
+    funcaoCallback(listaFiltrada[i]);
+  }
+}
+
 console.log("Perfil do candidato:");
 console.log(perfil1);
 console.log();
@@ -160,15 +166,14 @@ let vagasParaEstudar = listaVagas.filter(function(vaga) {
   return simulacao.percentual < 100;
 });
 
-for (let i = 0; i < vagasParaEstudar.length; i++) {
-  let recomendacoes = gerarRecomendacaoEstudo(perfil1, vagasParaEstudar[i]);
+porcessarRelatorio(vagasParaEstudar, function (vagaAtual) {
+  let recomendacoes = gerarRecomendacaoEstudo(perfil1, vagaAtual);
 
   console.log(
-    `Para a vaga ${vagasParaEstudar[i].cargo} na ${vagasParaEstudar[i].empresa}, estudar:`,
+    `Para a vaga ${vagaAtual.cargo} na ${vagaAtual.empresa}, estudar:`,
   );
-
   console.log(`${recomendacoes.join(" | ")}`);
-}
+});
 
 console.log();
 
