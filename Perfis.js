@@ -20,7 +20,7 @@ class Empresa extends Usuario {
 
     listaDeVagas.push(novaVaga);
 
-    return `A ${this.nome} publicou uma nova oportunidade para ${cargo} em ${this.cidade}!`;
+    return ` A ${this.nome} publicou uma nova oportunidade para ${cargo} em ${this.cidade}!`;
   }
 }
 
