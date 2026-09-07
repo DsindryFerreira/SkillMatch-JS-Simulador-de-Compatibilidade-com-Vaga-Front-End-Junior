@@ -9,10 +9,6 @@ const perfil1 = new Candidato(
   "3 meses",
 );
 
-console.log("Perfil do candidato:");
-console.log(perfil1);
-console.log();
-
 const empresaA = new Empresa("Empresa AA", "empresa-a@gmail.com");
 const empresaB = new Empresa("Empresa BB", "empresa-b@gmail.com");
 const empresaC = new Empresa("Empresa CC", "empresa-c@gmail.com");
@@ -31,21 +27,6 @@ const listaVagas = [
     "Node.js",
   ]),
 ];
-
-console.log("Lista de vagas:");
-
-for (let i = 0; i < listaVagas.length; i++) {
-  console.log(
-    "Empresa:",
-    listaVagas[i].empresa,
-    "| Cargo:",
-    listaVagas[i].cargo,
-    "| Requisitos:",
-    listaVagas[i].requisitos,
-  );
-}
-
-console.log();
 
 function simularCompatibilidade(candidato, vaga) {
   let habilidadesCandidato = candidato.habilidades;
@@ -89,12 +70,40 @@ function obterHabilidadesFaltantes(candidato, vaga) {
   return faltantes;
 }
 
-console.log("Resultado de compatibilidade:");
+function gerarRecomendacaoEstudo(candidato, vaga) {
+  let requisitosVaga = vaga.requisitos;
+  let habilidadesCandidato = candidato.habilidades;
+
+  let habilidadesFaltantes = requisitosVaga.filter(function (requisito) {
+    return !habilidadesCandidato.includes(requisito);
+  });
+
+  let recomendacoes = habilidadesFaltantes.map(function (habilidade) {
+    return habilidade;
+  });
+
+  return recomendacoes;
+}
+
+console.log("Perfil do candidato:");
+console.log(perfil1);
 console.log();
 
-let maiorPercentual = 0;
-let melhorCargo = "";
-let melhorEmpresa = "";
+console.log("Lista de vagas:");
+for (let i = 0; i < listaVagas.length; i++) {
+  console.log(
+    "Empresa:",
+    listaVagas[i].empresa,
+    "| Cargo:",
+    listaVagas[i].cargo,
+    "| Requisitos:",
+    listaVagas[i].requisitos,
+  );
+}
+console.log();
+
+console.log("Resultado de compatibilidade:");
+console.log();
 
 for (let i = 0; i < listaVagas.length; i++) {
   let resultado = simularCompatibilidade(perfil1, listaVagas[i]);
@@ -114,18 +123,44 @@ for (let i = 0; i < listaVagas.length; i++) {
     Cargo: ${listaVagas[i].cargo}  
     Compatibilidade: ${resultado.percentual.toFixed(2)} %  
     Classificação: ${resultado.classificacao}  
-    Requisitos faltantes: ${faltamTexto}`
+    Requisitos faltantes: ${faltamTexto}`,
   );
+}
+console.log();
 
-  if (resultado.percentual > maiorPercentual) {
-    maiorPercentual = resultado.percentual;
-    melhorCargo = listaVagas[i].cargo;
-    melhorEmpresa = listaVagas[i].empresa;
-  }
+let vagaCompativel = listaVagas.find(function (vaga) {
+  let simulacao = simularCompatibilidade(perfil1, vaga);
+  return simulacao.classificacao === "Alta compatibilidade";
+});
+
+if (vagaCompativel) {
+  let percentualVagaCompativel = simularCompatibilidade(perfil1, vagaCompativel);
+
+  console.log(
+    `Vaga com maior compatibilidade: 
+    ${vagaCompativel.empresa} - ${vagaCompativel.cargo} - ${percentualVagaCompativel.percentual.toFixed(2)} %`,
+  );
+} else {
+  console.log("Nenhuma vaga compatível com o seu perfil no momento.");
 }
 
 console.log();
-console.log(
-  `Vaga com maior compatibilidade: 
-  ${melhorEmpresa} - ${melhorCargo} (${maiorPercentual.toFixed(2)} %)`
-);
+
+console.log("Dicas de estudo para as outras vagas:");
+console.log();
+
+let vagasParaEstudar = listaVagas.filter(function(vaga) {
+  let simulacao = simularCompatibilidade(perfil1, vaga);
+  return simulacao.percentual < 100;
+});
+
+for (let i = 0; i < vagasParaEstudar.length; i++) {
+  let recomendacoes = gerarRecomendacaoEstudo(perfil1, vagasParaEstudar[i]);
+
+  console.log(
+    `Para a vaga ${vagasParaEstudar[i].cargo} na ${vagasParaEstudar[i].empresa}, estudar:`,
+  );
+
+  console.log(`${recomendacoes.join(" | ")}`);
+}
+
